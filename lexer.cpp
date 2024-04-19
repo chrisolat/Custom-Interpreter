@@ -17,7 +17,14 @@ namespace Lexer{
         switch (l.ch)
         {
         case '=':
-            tok = newToken(Token::TokenType::ASSIGN, l.ch);
+            if(peekChar(l) == '='){
+                char c = l.ch;
+                l.readChar();
+                tok = newToken(Token::TokenType::EQ, c + l.ch);
+                tok.literal = "==";
+            }else{
+                tok = newToken(Token::TokenType::ASSIGN, l.ch);
+            }
             break;
         case ';':
             tok = newToken(Token::TokenType::SEMICOLON, l.ch);
@@ -39,6 +46,31 @@ namespace Lexer{
             break;
         case '}':
             tok = newToken(Token::TokenType::RBRACE, l.ch);
+            break;
+        case '-':
+            tok = newToken(Token::TokenType::MINUS, l.ch);
+            break;
+        case '!':
+            if(peekChar(l) == '='){
+                char c = l.ch;
+                l.readChar();
+                tok = newToken(Token::TokenType::NOT_EQ, c + l.ch);
+                tok.literal = "!=";
+            }else{
+                tok = newToken(Token::TokenType::BANG, l.ch);
+            }
+            break;
+        case '*':
+            tok = newToken(Token::TokenType::ASTERISK, l.ch);
+            break;
+        case '/':
+            tok = newToken(Token::TokenType::SLASH, l.ch);
+            break;
+        case '>':
+            tok = newToken(Token::TokenType::GT, l.ch);
+            break;
+        case '<':
+            tok = newToken(Token::TokenType::LT, l.ch);
             break;
         case 0:
             tok = newToken(Token::TokenType::EOF_, l.ch);
@@ -99,5 +131,12 @@ namespace Lexer{
         while(l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r'){
             l.readChar();
         }
+    }
+
+    char peekChar(Lexer::lexer& l){
+        if(l.readPosition < l.input.size()){
+            return l.input[l.readPosition];
+        }
+        return '\0';
     }
 }

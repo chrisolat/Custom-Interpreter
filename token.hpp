@@ -25,7 +25,23 @@ namespace Token {
         RBRACE,
         // Keywords
         FUNCTION,
-        LET
+        LET,
+
+        MINUS,
+        BANG,
+        ASTERISK,
+        SLASH,
+        LT,
+        GT,
+
+        TRUE,
+        FALSE,
+        IF,
+        ELSE,
+        RETURN,
+
+        EQ,
+        NOT_EQ
     };
     struct token
     {

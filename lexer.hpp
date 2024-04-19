@@ -40,5 +40,7 @@ namespace Lexer{
     std::string readNumber(Lexer::lexer& l);
 
     void skipWhitespace(Lexer::lexer& l);
+
+    char peekChar(Lexer::lexer& l);
 }
 #endif

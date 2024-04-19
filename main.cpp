@@ -1,8 +1,7 @@
 #include <iostream>
-#include "token.hpp"
-#include "lexer.hpp"
+#include "repl.hpp"
 
 int main() {
-    std::cout << Token::TokenToString(Token::TokenType::EOF_) << std::endl;
+    repl::start(std::cin, std::cout);
     return 0;
 }
