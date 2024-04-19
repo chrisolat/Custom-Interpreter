@@ -11,8 +11,9 @@ namespace Lexer{
         return l;
     }
 
-    Token::token NextToken(Lexer::lexer l){
+    Token::token NextToken(Lexer::lexer& l){
         Token::token tok;
+        skipWhitespace(l);
         switch (l.ch)
         {
         case '=':
@@ -42,6 +43,19 @@ namespace Lexer{
         case 0:
             tok = newToken(Token::TokenType::EOF_, l.ch);
             break;
+        default:
+            if(isLetter(l)){
+                tok.literal = readIdentifier(l);
+                tok.type = Token::LookupIdent(tok.literal);
+                return tok;
+            }else if(isDigit(l)){
+                tok.type = Token::TokenType::INT;
+                tok.literal = readNumber(l);
+                return tok;
+            }
+            else{
+                tok = newToken(Token::TokenType::ILLEGAL, l.ch);
+            }
         
         }
         l.readChar();
@@ -54,5 +68,36 @@ namespace Lexer{
         return tok;
     }
 
+    std::string readIdentifier(Lexer::lexer& l){
+        std::string ident = "";
+        while(isLetter(l)){
+            ident += l.ch;
+            l.readChar();
+            
+        }
+        return ident;
+    }
 
+    bool isLetter(Lexer::lexer& l){
+        return 'a' <= l.ch && l.ch <= 'z' || 'A' <= l.ch && l.ch <= 'Z' || l.ch == '_';
+    }
+
+    bool isDigit(Lexer::lexer& l){
+        return '0' <= l.ch && l.ch <= '9';
+    }
+
+    std::string readNumber(Lexer::lexer& l){
+        std::string ident = "";
+        while(isDigit(l)){
+            ident += l.ch;
+            l.readChar();
+        }
+        return ident;
+    }
+
+    void skipWhitespace(Lexer::lexer& l){
+        while(l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r'){
+            l.readChar();
+        }
+    }
 }

@@ -1,5 +1,5 @@
 #include "token.hpp"
-
+#include <unordered_map>
 namespace Token {
     std::string TokenToString(TokenType token) {
         switch (token) {
@@ -19,5 +19,17 @@ namespace Token {
             case TokenType::LET: return "LET";
             default: return "UNKNOWN";
         }
+    }
+
+    std::unordered_map<std::string, TokenType> keyWords{
+        {"fn", TokenType::FUNCTION},
+        {"let", TokenType::LET}
+    };
+
+    TokenType LookupIdent(std::string ident){
+        if(keyWords.find(ident) != keyWords.end()){
+            return keyWords[ident];
+        }
+        return TokenType::IDENT;
     }
 }

@@ -41,7 +41,7 @@ namespace Token {
         }
     };
     std::string TokenToString(TokenType token);
-
+    TokenType LookupIdent(std::string ident);
     // token NexToken(Le)
 }
 
